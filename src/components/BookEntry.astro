@@ -3,12 +3,14 @@ import type { BookRecord } from "../types/books";
 
 type Props = {
   book: BookRecord;
+  number: number;
 };
 
-const { book } = Astro.props;
+const { book, number } = Astro.props;
 const entryUrl = `/books#${book.slug}`;
 const hasLinks = Boolean(book.goodreadsUrl || book.amazonUrl);
 const hasCover = Boolean(book.coverImage);
+const numberLabel = String(number).padStart(2, "0");
 ---
 
 <article class="book-entry" id={book.slug}>
@@ -29,10 +31,19 @@ const hasCover = Boolean(book.coverImage);
 
     <div class="entry-copy">
       <header class="entry-header">
-        <h2 class="entry-title">
-          <a href={entryUrl}>{book.title}</a>
-        </h2>
-        {book.author && <p class="entry-author">{book.author}</p>}
+        <div class="entry-heading-row">
+          <div class="entry-number" aria-label={`Book ${number}`}>
+            <span class="entry-number-label">Book</span>
+            <span class="entry-number-value">{numberLabel}</span>
+          </div>
+
+          <div class="entry-heading-copy">
+            <h2 class="entry-title">
+              <a href={entryUrl}>{book.title}</a>
+            </h2>
+            {book.author && <p class="entry-author">{book.author}</p>}
+          </div>
+        </div>
       </header>
 
       {book.quote && <blockquote>{book.quote}</blockquote>}
@@ -112,6 +123,45 @@ const hasCover = Boolean(book.coverImage);
     gap: 0.35rem;
   }
 
+  .entry-heading-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .entry-heading-copy {
+    min-width: 0;
+  }
+
+  .entry-number {
+    display: inline-grid;
+    gap: 0.15rem;
+    min-width: 4.2rem;
+    padding: 0.55rem 0.65rem 0.5rem;
+    border: 1px solid rgba(141, 91, 63, 0.18);
+    border-radius: 999px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.68));
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+  }
+
+  .entry-number-label {
+    color: var(--color-subtle);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .entry-number-value {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
   .entry-title {
     font-size: clamp(1.5rem, 2vw, 2rem);
   }
@@ -148,6 +198,15 @@ const hasCover = Boolean(book.coverImage);
   @media (max-width: 760px) {
     .entry-grid {
       grid-template-columns: 1fr;
+    }
+
+    .entry-heading-row {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .entry-number {
+      justify-self: start;
     }
 
     .cover-shell {

@@ -10,7 +10,6 @@ export type BookRecord = {
 };
 
 export type BooksMeta = {
-  age: number;
   count: number;
   updatedAt: string;
 };

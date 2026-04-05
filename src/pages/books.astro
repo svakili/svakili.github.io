@@ -16,22 +16,19 @@ const updatedLabel = new Intl.DateTimeFormat("en-US", {
       title="Books"
       lead="A living list of books that changed my life."
       eyebrow="Library"
-      meta={[
-        `Age ${booksMeta.age}`,
-        `${booksMeta.count} books`,
-        `Updated ${updatedLabel}`
-      ]}
+      meta={[`${booksMeta.count} books`, `Updated ${updatedLabel}`]}
     />
 
     <div class="books-preface surface-card">
+      <p>The list below is <strong>absolutely unranked</strong>.</p>
       <p>
-        The list below is <strong>unranked</strong>. Its order is preserved exactly as I
-        keep it, but it does not imply chronology, hierarchy, or category.
+        It changes over time. One book gets added each year, and the list can also
+        shift as some books fall away and others earn their place.
       </p>
     </div>
 
     <section class="books-list" aria-label="Books that changed my life">
-      {books.map((book) => <BookEntry book={book} />)}
+      {books.map((book, index) => <BookEntry book={book} number={index + 1} />)}
     </section>
   </section>
 </BaseLayout>
@@ -43,6 +40,8 @@ const updatedLabel = new Intl.DateTimeFormat("en-US", {
 
   .books-preface {
     margin: 0 0 2rem;
+    display: grid;
+    gap: 0.45rem;
     padding: 1.1rem 1.25rem;
     color: var(--color-muted);
   }

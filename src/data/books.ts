@@ -222,7 +222,6 @@ export const books: BookRecord[] = rawBooks.map((book) => ({
 }));
 
 export const booksMeta: BooksMeta = {
-  age: 44,
   count: books.length,
   updatedAt: "2025-04-01"
 };
