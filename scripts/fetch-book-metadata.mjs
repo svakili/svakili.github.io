@@ -65,10 +65,165 @@ const books = [
   { title: "The Alchemist", author: "Paulo Coelho" }
 ];
 
-const buildExternalUrl = (base, param, title, author) => {
-  const url = new URL(base);
-  url.searchParams.set(param, [title, author].filter(Boolean).join(" "));
-  return url.toString();
+const goodreadsOverrides = {
+  "The Snowball: Warren Buffett and the Business of Life":
+    "https://www.goodreads.com/book/show/2054761.The_Snowball",
+  "Persepolis: The Story of a Childhood":
+    "https://www.goodreads.com/book/show/9516.Persepolis",
+  "Project Hail Mary": "https://www.goodreads.com/book/show/54493401-project-hail-mary",
+  "Losing My Virginity": "https://www.goodreads.com/book/show/211099.Losing_My_Virginity",
+  "To Kill a Mockingbird": "https://www.goodreads.com/book/show/2654.To_Kill_a_Mockingbird",
+  "Atlas Shrugged": "https://www.goodreads.com/book/show/9365.Atlas_Shrugged",
+  "Children of Time": "https://www.goodreads.com/book/show/25499718-children-of-time",
+  "The Grapes of Wrath": "https://www.goodreads.com/book/show/18114322-the-grapes-of-wrath",
+  "The Psychology of Money":
+    "https://www.goodreads.com/book/show/55290131-the-psychology-of-money",
+  "Fooled by Randomness": "https://www.goodreads.com/book/show/905654.Fooled_by_Randomness",
+  "The Life You Can Save":
+    "https://www.goodreads.com/book/show/49005196-the-life-you-can-save",
+  "The Game": "https://www.goodreads.com/book/show/900.The_Game",
+  "Hillbilly Elegy":
+    "https://www.goodreads.com/book/show/27161156.Hillbilly_Elegy_A_Memoir_of_a_Family_and_Culture_in_Crisis"
+};
+
+const badGoodreadsTerms = [
+  "summary",
+  "guide",
+  "study",
+  "analysis",
+  "quicklet",
+  "instaread",
+  "sparknotes",
+  "graphic novel",
+  "adaptation",
+  "workbook"
+];
+
+const goodreadsResultPattern =
+  /bookTitle" itemprop="url" href="([^"]+)".*?<span itemprop=["']name["'][^>]*>(.*?)<\/span>.*?authorName" itemprop="url" href="[^"]+"><span itemprop="name">(.*?)<\/span>/gs;
+
+const normalizeText = (value) =>
+  value
+    .toLowerCase()
+    .replaceAll("&", " and ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+
+const decodeHtml = (value) =>
+  value
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&#39;", "'")
+    .replaceAll("&apos;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
+
+const stripTags = (value) => value.replace(/<[^>]+>/g, "").trim();
+
+const scoreGoodreadsCandidate = ({ title, author, candidateTitle, candidateAuthor }) => {
+  const targetTitle = normalizeText(title);
+  const targetAuthor = normalizeText(author);
+  const normalizedTitle = normalizeText(candidateTitle);
+  const normalizedAuthor = normalizeText(candidateAuthor);
+  const targetTitleTokens = new Set(targetTitle.split(" "));
+  const candidateTitleTokens = new Set(normalizedTitle.split(" "));
+  const targetAuthorTokens = new Set(targetAuthor.split(" "));
+  const candidateAuthorTokens = new Set(normalizedAuthor.split(" "));
+
+  let score = 0;
+
+  if (targetTitle === normalizedTitle) score += 150;
+  if (normalizedTitle.includes(targetTitle)) score += 80;
+  if (targetTitle.includes(normalizedTitle)) score += 50;
+
+  score +=
+    [...targetTitleTokens].filter((token) => candidateTitleTokens.has(token)).length * 5;
+  score -= Math.max(0, candidateTitleTokens.size - targetTitleTokens.size) * 3;
+
+  if (targetAuthor === normalizedAuthor) score += 100;
+  else if (
+    normalizedAuthor.includes(targetAuthor) ||
+    targetAuthor.includes(normalizedAuthor)
+  ) {
+    score += 60;
+  }
+
+  score +=
+    [...targetAuthorTokens].filter((token) => candidateAuthorTokens.has(token)).length * 4;
+
+  for (const term of badGoodreadsTerms) {
+    if (normalizedTitle.includes(term) || normalizedAuthor.includes(term)) {
+      score -= 140;
+    }
+  }
+
+  return score;
+};
+
+const resolveGoodreadsUrl = async (title, author) => {
+  if (goodreadsOverrides[title]) {
+    return goodreadsOverrides[title];
+  }
+
+  const url = new URL("https://www.goodreads.com/search");
+  url.searchParams.set("q", `${title} ${author}`);
+
+  const response = await fetch(url, {
+    headers: {
+      "user-agent": "Mozilla/5.0"
+    }
+  });
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const html = await response.text();
+  const candidates = [];
+
+  for (const match of html.matchAll(goodreadsResultPattern)) {
+    const href = decodeHtml(match[1]).split("?")[0];
+    const candidateTitle = decodeHtml(stripTags(match[2]));
+    const candidateAuthor = decodeHtml(match[3]).trim();
+
+    candidates.push({
+      href: `https://www.goodreads.com${href}`,
+      score: scoreGoodreadsCandidate({
+        title,
+        author,
+        candidateTitle,
+        candidateAuthor
+      })
+    });
+  }
+
+  candidates.sort((left, right) => right.score - left.score);
+  return candidates[0]?.href;
+};
+
+const resolveAmazonUrl = async (title, author) => {
+  const url = new URL("https://www.amazon.com/s");
+  url.searchParams.set("k", `${title} ${author}`);
+  url.searchParams.set("i", "stripbooks");
+
+  const response = await fetch(url, {
+    headers: {
+      "user-agent": "Mozilla/5.0"
+    }
+  });
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const html = await response.text();
+  const asins = [...html.matchAll(/data-asin="([A-Z0-9]{10})"/g)]
+    .map((match) => match[1])
+    .filter((asin) => asin && asin !== "0000000000");
+
+  const asin = asins[0];
+  return asin ? `https://www.amazon.com/dp/${asin}` : undefined;
 };
 
 const searchBook = async ({ title, author }) => {
@@ -82,19 +237,21 @@ const searchBook = async ({ title, author }) => {
   const data = await response.json();
   const docs = Array.isArray(data.docs) ? data.docs : [];
   const match = docs.find((doc) => doc.author_name?.includes(author)) ?? docs[0];
+  const [goodreadsUrl, amazonUrl] = await Promise.all([
+    resolveGoodreadsUrl(title, author),
+    resolveAmazonUrl(title, author)
+  ]);
 
   if (!match) {
     return {
       title,
       author,
       coverImage: undefined,
-      goodreadsUrl: buildExternalUrl("https://www.goodreads.com/search", "q", title, author),
-      amazonUrl: buildExternalUrl("https://www.amazon.com/s", "k", title, author)
+      goodreadsUrl,
+      amazonUrl
     };
   }
 
-  const goodreadsId = Array.isArray(match.id_goodreads) ? match.id_goodreads[0] : undefined;
-  const amazonId = Array.isArray(match.id_amazon) ? match.id_amazon[0] : undefined;
   const coverId = match.cover_i;
 
   return {
@@ -103,12 +260,8 @@ const searchBook = async ({ title, author }) => {
     coverImage: coverId
       ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
       : undefined,
-    goodreadsUrl: goodreadsId
-      ? `https://www.goodreads.com/book/show/${goodreadsId}`
-      : buildExternalUrl("https://www.goodreads.com/search", "q", title, author),
-    amazonUrl: amazonId
-      ? `https://www.amazon.com/dp/${amazonId}`
-      : buildExternalUrl("https://www.amazon.com/s", "k", title, author)
+    goodreadsUrl,
+    amazonUrl
   };
 };
 

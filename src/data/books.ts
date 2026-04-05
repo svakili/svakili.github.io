@@ -199,11 +199,190 @@ const rawBooks: RawBook[] = [
   { title: "The Alchemist", author: "Paulo Coelho" }
 ];
 
-const createExternalUrl = (base: string, param: string, title: string, author?: string) => {
-  const query = [title, author].filter(Boolean).join(" ");
-  const url = new URL(base);
-  url.searchParams.set(param, query);
-  return url.toString();
+const directBookLinks: Record<
+  string,
+  Pick<BookRecord, "goodreadsUrl" | "amazonUrl">
+> = {
+  "Kitchen Confidential": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/33313.Kitchen_Confidential",
+    amazonUrl: "https://www.amazon.com/dp/0060899220"
+  },
+  Freakonomics: {
+    goodreadsUrl: "https://www.goodreads.com/book/show/7159006-freakonomics",
+    amazonUrl: "https://www.amazon.com/dp/B000TK5BS2"
+  },
+  "Slaughterhouse-Five": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/4981.Slaughterhouse_Five",
+    amazonUrl: "https://www.amazon.com/dp/0385333846"
+  },
+  "The Snowball: Warren Buffett and the Business of Life": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/2054761.The_Snowball",
+    amazonUrl: "https://www.amazon.com/dp/0553805096"
+  },
+  "Animal Farm": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/170448.Animal_Farm",
+    amazonUrl: "https://www.amazon.com/dp/0451526341"
+  },
+  "How to Win Friends and Influence People": {
+    goodreadsUrl:
+      "https://www.goodreads.com/book/show/6945594-how-to-win-friends-and-influence-people-by-dale-carnegie",
+    amazonUrl: "https://www.amazon.com/dp/1439167346"
+  },
+  "The Kite Runner": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/17165596-the-kite-runner",
+    amazonUrl: "https://www.amazon.com/dp/159463193X"
+  },
+  "Persepolis: The Story of a Childhood": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/9516.Persepolis",
+    amazonUrl: "https://www.amazon.com/dp/037571457X"
+  },
+  "Man's Search for Meaning": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/4069.Man_s_Search_for_Meaning",
+    amazonUrl: "https://www.amazon.com/dp/080701429X"
+  },
+  Dune: {
+    goodreadsUrl: "https://www.goodreads.com/book/show/44767458-dune",
+    amazonUrl: "https://www.amazon.com/dp/059309932X"
+  },
+  "Steve Jobs": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/11084145-steve-jobs",
+    amazonUrl: "https://www.amazon.com/dp/1451648537"
+  },
+  "The Fifth Mountain": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/1429.The_Fifth_Mountain",
+    amazonUrl: "https://www.amazon.com/dp/0060930136"
+  },
+  "Project Hail Mary": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/54493401-project-hail-mary",
+    amazonUrl: "https://www.amazon.com/dp/0593135202"
+  },
+  "1984": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/61439040-1984",
+    amazonUrl: "https://www.amazon.com/dp/0452284236"
+  },
+  "Never Eat Alone": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/84699.Never_Eat_Alone",
+    amazonUrl: "https://www.amazon.com/dp/0385512058"
+  },
+  "Losing My Virginity": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/211099.Losing_My_Virginity",
+    amazonUrl: "https://www.amazon.com/dp/0812932293"
+  },
+  "Surely You're Joking, Mr. Feynman!": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/35167685-surely-you-re-joking-mr-feynman",
+    amazonUrl: "https://www.amazon.com/dp/0393355624"
+  },
+  "To Kill a Mockingbird": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/2654.To_Kill_a_Mockingbird",
+    amazonUrl: "https://www.amazon.com/dp/0060935464"
+  },
+  "The Brain That Changes Itself": {
+    goodreadsUrl:
+      "https://www.goodreads.com/book/show/200281451-the-brain-that-changes-itself",
+    amazonUrl: "https://www.amazon.com/dp/0143113100"
+  },
+  "Atlas Shrugged": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/9365.Atlas_Shrugged",
+    amazonUrl: "https://www.amazon.com/dp/0394415760"
+  },
+  "Reading Lolita in Tehran": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/7603.Reading_Lolita_in_Tehran",
+    amazonUrl: "https://www.amazon.com/dp/081297106X"
+  },
+  "The Red and the Black": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/14662.The_Red_and_the_Black",
+    amazonUrl: "https://www.amazon.com/dp/0140447644"
+  },
+  "Memoirs of a Geisha": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/929.Memoirs_of_a_Geisha",
+    amazonUrl: "https://www.amazon.com/dp/1400096898"
+  },
+  "Children of Time": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/25499718-children-of-time",
+    amazonUrl: "https://www.amazon.com/dp/1447273281"
+  },
+  "The Name of the Wind": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/186074.The_Name_of_the_Wind",
+    amazonUrl: "https://www.amazon.com/dp/075640407X"
+  },
+  "East of Eden": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/4406.East_of_Eden",
+    amazonUrl: "https://www.amazon.com/dp/0142000655"
+  },
+  "The Grapes of Wrath": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/18114322-the-grapes-of-wrath",
+    amazonUrl: "https://www.amazon.com/dp/067001690X"
+  },
+  "That Will Never Work": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/44428950-that-will-never-work",
+    amazonUrl: "https://www.amazon.com/dp/0316530204"
+  },
+  "Harry Potter Series": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/862041.Harry_Potter_Series_Box_Set",
+    amazonUrl: "https://www.amazon.com/dp/0545044251"
+  },
+  "The Psychology of Money": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/55290131-the-psychology-of-money",
+    amazonUrl: "https://www.amazon.com/dp/9390166268"
+  },
+  "Fooled by Randomness": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/905654.Fooled_by_Randomness",
+    amazonUrl: "https://www.amazon.com/dp/0141031484"
+  },
+  Blindness: {
+    goodreadsUrl: "https://www.goodreads.com/book/show/40495148-blindness",
+    amazonUrl: "https://www.amazon.com/dp/0156007754"
+  },
+  "The Fountainhead": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/2122.The_Fountainhead",
+    amazonUrl: "https://www.amazon.com/dp/B000Z7FH38"
+  },
+  "The Five Love Languages of Children": {
+    goodreadsUrl:
+      "https://www.goodreads.com/book/show/163016844-the-five-love-languages-of-children",
+    amazonUrl: "https://www.amazon.com/dp/B01GQO95PY"
+  },
+  "The Bitcoin Standard": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/36448501-the-bitcoin-standard",
+    amazonUrl: "https://www.amazon.com/dp/1119473861"
+  },
+  "Sophie's World": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/10959.Sophie_s_World",
+    amazonUrl: "https://www.amazon.com/dp/1857993284"
+  },
+  "The Life You Can Save": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/49005196-the-life-you-can-save",
+    amazonUrl: "https://www.amazon.com/dp/1733672702"
+  },
+  "Darius the Great Is Not Okay": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/37506437-darius-the-great-is-not-okay",
+    amazonUrl: "https://www.amazon.com/dp/0525552960"
+  },
+  "Ducks: Two Years in the Oil Sands": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/59069071-ducks",
+    amazonUrl: "https://www.amazon.com/dp/1770462899"
+  },
+  "Jack: Straight from the Gut": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/5559.Jack",
+    amazonUrl: "https://www.amazon.com/dp/5559608475"
+  },
+  Babel: {
+    goodreadsUrl: "https://www.goodreads.com/book/show/57945316-babel",
+    amazonUrl: "https://www.amazon.com/dp/0063021420"
+  },
+  "The Game": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/900.The_Game",
+    amazonUrl: "https://www.amazon.com/dp/0060554738"
+  },
+  "Hillbilly Elegy": {
+    goodreadsUrl:
+      "https://www.goodreads.com/book/show/27161156.Hillbilly_Elegy_A_Memoir_of_a_Family_and_Culture_in_Crisis",
+    amazonUrl: "https://www.amazon.com/dp/B01EM4ZJBO"
+  },
+  "The Alchemist": {
+    goodreadsUrl: "https://www.goodreads.com/book/show/18144590-the-alchemist",
+    amazonUrl: "https://www.amazon.com/dp/0062315005"
+  }
 };
 
 const createSlug = (title: string) =>
@@ -217,8 +396,7 @@ const createSlug = (title: string) =>
 export const books: BookRecord[] = rawBooks.map((book) => ({
   ...book,
   slug: createSlug(book.title),
-  goodreadsUrl: createExternalUrl("https://www.goodreads.com/search", "q", book.title, book.author),
-  amazonUrl: createExternalUrl("https://www.amazon.com/s", "k", book.title, book.author)
+  ...directBookLinks[book.title]
 }));
 
 export const booksMeta: BooksMeta = {
