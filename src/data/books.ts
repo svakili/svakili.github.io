@@ -32,7 +32,8 @@ const rawBooks: RawBook[] = [
   {
     title: "How to Win Friends and Influence People",
     author: "Dale Carnegie",
-    coverImage: "https://covers.openlibrary.org/b/id/13314878-M.jpg"
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1348670562i/6945594.jpg"
   },
   {
     title: "The Kite Runner",
@@ -140,7 +141,8 @@ const rawBooks: RawBook[] = [
   {
     title: "The Grapes of Wrath",
     author: "John Steinbeck",
-    coverImage: "https://covers.openlibrary.org/b/id/12715902-M.jpg"
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1375670575i/18114322.jpg"
   },
   {
     title: "That Will Never Work",
@@ -182,12 +184,14 @@ const rawBooks: RawBook[] = [
   {
     title: "The Bitcoin Standard",
     author: "Saifedean Ammous",
-    coverImage: "https://covers.openlibrary.org/b/id/10320866-M.jpg"
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1517051735i/36448501.jpg"
   },
   {
     title: "Sophie's World",
     author: "Jostein Gaarder",
-    coverImage: "https://covers.openlibrary.org/b/id/7110628-M.jpg"
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1343459906i/10959.jpg"
   },
   {
     title: "The Life You Can Save",
@@ -213,7 +217,8 @@ const rawBooks: RawBook[] = [
   {
     title: "Babel",
     author: "R. F. Kuang",
-    coverImage: "https://covers.openlibrary.org/b/id/12468631-M.jpg"
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1677361825i/57945316.jpg"
   },
   {
     title: "The Game",

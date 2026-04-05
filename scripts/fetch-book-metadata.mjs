@@ -86,6 +86,19 @@ const goodreadsOverrides = {
     "https://www.goodreads.com/book/show/27161156.Hillbilly_Elegy_A_Memoir_of_a_Family_and_Culture_in_Crisis"
 };
 
+const coverOverrides = {
+  "How to Win Friends and Influence People":
+    "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1348670562i/6945594.jpg",
+  "The Grapes of Wrath":
+    "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1375670575i/18114322.jpg",
+  "The Bitcoin Standard":
+    "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1517051735i/36448501.jpg",
+  "Sophie's World":
+    "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1343459906i/10959.jpg",
+  Babel:
+    "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1677361825i/57945316.jpg"
+};
+
 const badGoodreadsTerms = [
   "summary",
   "guide",
@@ -263,7 +276,7 @@ const searchBook = async ({ title, author }) => {
     resolveGoodreadsUrl(title, author),
     resolveAmazonUrl(title, author)
   ]);
-  const fallbackCover = await resolveGoodreadsCover(goodreadsUrl);
+  const fallbackCover = coverOverrides[title] ?? (await resolveGoodreadsCover(goodreadsUrl));
 
   if (!match) {
     return {
