@@ -3,14 +3,12 @@ type Props = {
   title: string;
   lead: string;
   meta?: string[];
-  eyebrow?: string;
 };
 
-const { title, lead, meta = [], eyebrow } = Astro.props;
+const { title, lead, meta = [] } = Astro.props;
 ---
 
 <section class="page-intro">
-  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <h1>{title}</h1>
   <p class="lede lead-copy">{lead}</p>
   {

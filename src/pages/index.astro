@@ -5,9 +5,7 @@ import { siteConfig } from "../config/site";
 
 <BaseLayout>
   <section class="container home-hero">
-    <p class="eyebrow">Personal site</p>
     <h1>{siteConfig.name}</h1>
-    <p class="lede">A quiet personal website for enduring interests, ideas, and reading.</p>
     <div class="hero-actions">
       <a class="button-link" href="/books">Enter the Books section</a>
     </div>
@@ -19,12 +17,7 @@ import { siteConfig } from "../config/site";
     padding: clamp(5rem, 15vw, 9rem) 0 3rem;
   }
 
-  .home-hero .lede {
-    margin-top: 1rem;
-    font-size: clamp(1.15rem, 2.3vw, 1.45rem);
-  }
-
   .hero-actions {
-    margin-top: 2rem;
+    margin-top: 1.75rem;
   }
 </style>

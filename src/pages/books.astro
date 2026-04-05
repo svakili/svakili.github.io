@@ -10,12 +10,11 @@ const updatedLabel = new Intl.DateTimeFormat("en-US", {
 }).format(new Date(booksMeta.updatedAt));
 ---
 
-<BaseLayout title="Books" description="A living list of books that changed my life.">
+<BaseLayout title="Books" description="Books that have had an impact on me.">
   <section class="container-wide books-page">
     <PageIntro
       title="Books"
-      lead="A living list of books that changed my life."
-      eyebrow="Library"
+      lead="The books that have had an impact on me."
       meta={[`${booksMeta.count} books`, `Updated ${updatedLabel}`]}
     />
 
