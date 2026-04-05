@@ -8,6 +8,5 @@ export const siteConfig = {
   title: "Soheyl Vakili",
   description: "A quiet personal website for enduring interests, ideas, and reading.",
   siteUrl: "https://svakili.github.io",
-  nav: [{ label: "Books", href: "/books" }] satisfies NavItem[],
-  footerNote: "Built with Astro."
+  nav: [{ label: "Books", href: "/books" }] satisfies NavItem[]
 };

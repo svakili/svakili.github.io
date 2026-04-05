@@ -39,7 +39,6 @@ const currentYear = new Date().getFullYear();
       <footer class="site-footer">
         <div class="container footer-inner">
           <p>&copy; {currentYear} {siteConfig.name}</p>
-          <p>{siteConfig.footerNote}</p>
         </div>
       </footer>
       <BackToTop />
@@ -54,9 +53,7 @@ const currentYear = new Date().getFullYear();
 
   .footer-inner {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.75rem 1rem;
+    align-items: center;
     padding-top: 1.5rem;
     border-top: 1px solid var(--color-rule);
     color: var(--color-subtle);
