@@ -7,23 +7,9 @@ import { siteConfig } from "../config/site";
   <section class="container home-hero">
     <p class="eyebrow">Personal site</p>
     <h1>{siteConfig.name}</h1>
-    <p class="lede">
-      A personal site in progress, beginning with a living list of books that changed
-      my life.
-    </p>
+    <p class="lede">A quiet personal website for enduring interests, ideas, and reading.</p>
     <div class="hero-actions">
       <a class="button-link" href="/books">Enter the Books section</a>
-    </div>
-  </section>
-
-  <section class="container home-note surface-card">
-    <div class="note-copy">
-      <h2>Beginning with one real page</h2>
-      <p class="lede">
-        This first version is intentionally spare. The foundation is here for future
-        essays, notes, and an About page, but Books is the only public section for
-        now.
-      </p>
     </div>
   </section>
 </BaseLayout>
@@ -40,15 +26,5 @@ import { siteConfig } from "../config/site";
 
   .hero-actions {
     margin-top: 2rem;
-  }
-
-  .home-note {
-    margin-top: 1rem;
-    padding: clamp(1.4rem, 3vw, 2rem);
-  }
-
-  .note-copy {
-    display: grid;
-    gap: 0.8rem;
   }
 </style>

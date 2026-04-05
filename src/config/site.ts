@@ -6,8 +6,7 @@ export type NavItem = {
 export const siteConfig = {
   name: "Soheyl Vakili",
   title: "Soheyl Vakili",
-  description:
-    "A personal site in progress, beginning with a living list of books that changed my life.",
+  description: "A quiet personal website for enduring interests, ideas, and reading.",
   siteUrl: "https://svakili.github.io",
   nav: [{ label: "Books", href: "/books" }] satisfies NavItem[],
   footerNote: "Built with Astro."
