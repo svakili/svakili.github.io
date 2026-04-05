@@ -17,7 +17,8 @@ const rawBooks: RawBook[] = [
   {
     title: "Slaughterhouse-Five",
     author: "Kurt Vonnegut",
-    coverImage: "https://covers.openlibrary.org/b/id/12727001-M.jpg"
+    coverImage: "https://covers.openlibrary.org/b/id/12727001-M.jpg",
+    quote: "so it goes..."
   },
   {
     title: "The Snowball: Warren Buffett and the Business of Life",
@@ -28,7 +29,8 @@ const rawBooks: RawBook[] = [
   {
     title: "Animal Farm",
     author: "George Orwell",
-    coverImage: "https://covers.openlibrary.org/b/id/11261770-M.jpg"
+    coverImage: "https://covers.openlibrary.org/b/id/11261770-M.jpg",
+    quote: "All animals are equal, but some animals are more equal than others."
   },
   {
     title: "How to Win Friends and Influence People",
