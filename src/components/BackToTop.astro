@@ -1,0 +1,53 @@
+<button class="back-to-top quiet-button" type="button" aria-label="Back to top">
+  <span aria-hidden="true">↑</span>
+  <span>Top</span>
+</button>
+
+<script is:inline>
+  const button = document.querySelector(".back-to-top");
+
+  if (button instanceof HTMLButtonElement) {
+    const setVisibility = () => {
+      button.dataset.visible = window.scrollY > 640 ? "true" : "false";
+    };
+
+    setVisibility();
+    window.addEventListener("scroll", setVisibility, { passive: true });
+
+    button.addEventListener("click", () => {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion ? "auto" : "smooth"
+      });
+    });
+  }
+</script>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.5rem);
+  }
+
+  .back-to-top[data-visible="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 720px) {
+    .back-to-top {
+      right: 0.75rem;
+      bottom: 0.75rem;
+    }
+  }
+</style>

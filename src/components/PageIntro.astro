@@ -1,0 +1,35 @@
+---
+type Props = {
+  title: string;
+  lead: string;
+  meta?: string[];
+  eyebrow?: string;
+};
+
+const { title, lead, meta = [], eyebrow } = Astro.props;
+---
+
+<section class="page-intro">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1>{title}</h1>
+  <p class="lede lead-copy">{lead}</p>
+  {
+    meta.length > 0 && (
+      <div class="meta-row" aria-label="Page metadata">
+        {meta.map((item) => <span>{item}</span>)}
+      </div>
+    )
+  }
+</section>
+
+<style>
+  .page-intro {
+    padding: clamp(2.5rem, 8vw, 5.5rem) 0 2rem;
+  }
+
+  .lead-copy {
+    margin-top: 1rem;
+    font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+    line-height: 1.6;
+  }
+</style>

@@ -1,0 +1,65 @@
+---
+import BackToTop from "../components/BackToTop.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { siteConfig } from "../config/site";
+import "../styles/global.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description
+} = Astro.props;
+
+const pageTitle = title === siteConfig.title ? title : `${title} | ${siteConfig.title}`;
+const canonical = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <div class="site-shell">
+      <SiteHeader />
+      <main id="content" class="site-main">
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>&copy; {currentYear} {siteConfig.name}</p>
+          <p>{siteConfig.footerNote}</p>
+        </div>
+      </footer>
+      <BackToTop />
+    </div>
+  </body>
+</html>
+
+<style>
+  .site-footer {
+    padding: 0 0 2rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-rule);
+    color: var(--color-subtle);
+    font-size: 0.95rem;
+  }
+</style>

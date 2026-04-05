@@ -1,0 +1,57 @@
+---
+import BookEntry from "../components/BookEntry.astro";
+import PageIntro from "../components/PageIntro.astro";
+import { books, booksMeta } from "../data/books";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const updatedLabel = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+  year: "numeric"
+}).format(new Date(booksMeta.updatedAt));
+---
+
+<BaseLayout title="Books" description="A living list of books that changed my life.">
+  <section class="container-wide books-page">
+    <PageIntro
+      title="Books"
+      lead="A living list of books that changed my life."
+      eyebrow="Library"
+      meta={[
+        `Age ${booksMeta.age}`,
+        `${booksMeta.count} books`,
+        `Updated ${updatedLabel}`
+      ]}
+    />
+
+    <div class="books-preface surface-card">
+      <p>
+        The list below is <strong>unranked</strong>. Its order is preserved exactly as I
+        keep it, but it does not imply chronology, hierarchy, or category.
+      </p>
+    </div>
+
+    <section class="books-list" aria-label="Books that changed my life">
+      {books.map((book) => <BookEntry book={book} />)}
+    </section>
+  </section>
+</BaseLayout>
+
+<style>
+  .books-page {
+    padding-bottom: 1.5rem;
+  }
+
+  .books-preface {
+    margin: 0 0 2rem;
+    padding: 1.1rem 1.25rem;
+    color: var(--color-muted);
+  }
+
+  .books-preface strong {
+    color: var(--color-ink);
+  }
+
+  .books-list {
+    margin-top: 0.5rem;
+  }
+</style>
