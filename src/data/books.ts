@@ -20,7 +20,9 @@ const rawBooks: RawBook[] = [
   },
   {
     title: "The Snowball: Warren Buffett and the Business of Life",
-    author: "Alice Schroeder"
+    author: "Alice Schroeder",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1320458276i/2054761.jpg"
   },
   {
     title: "Animal Farm",
@@ -39,7 +41,9 @@ const rawBooks: RawBook[] = [
   },
   {
     title: "Persepolis: The Story of a Childhood",
-    author: "Marjane Satrapi"
+    author: "Marjane Satrapi",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1425871473i/9516.jpg"
   },
   {
     title: "Man's Search for Meaning",
@@ -66,7 +70,12 @@ const rawBooks: RawBook[] = [
     author: "Andy Weir",
     coverImage: "https://covers.openlibrary.org/b/id/11200092-M.jpg"
   },
-  { title: "1984", author: "George Orwell" },
+  {
+    title: "1984",
+    author: "George Orwell",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040.jpg"
+  },
   {
     title: "Never Eat Alone",
     author: "Keith Ferrazzi",
@@ -102,7 +111,12 @@ const rawBooks: RawBook[] = [
     author: "Azar Nafisi",
     coverImage: "https://covers.openlibrary.org/b/id/227873-M.jpg"
   },
-  { title: "The Red and the Black", author: "Stendhal" },
+  {
+    title: "The Red and the Black",
+    author: "Stendhal",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1635011110i/14662.jpg"
+  },
   {
     title: "Memoirs of a Geisha",
     author: "Arthur Golden",
@@ -138,13 +152,23 @@ const rawBooks: RawBook[] = [
     author: "J.K. Rowling",
     coverImage: "https://covers.openlibrary.org/b/id/8457523-M.jpg"
   },
-  { title: "The Psychology of Money", author: "Morgan Housel" },
+  {
+    title: "The Psychology of Money",
+    author: "Morgan Housel",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1599740486i/55290131.jpg"
+  },
   {
     title: "Fooled by Randomness",
     author: "Nassim Nicholas Taleb",
     coverImage: "https://covers.openlibrary.org/b/id/855791-M.jpg"
   },
-  { title: "Blindness", author: "Jose Saramago" },
+  {
+    title: "Blindness",
+    author: "Jose Saramago",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1528481068i/40495148.jpg"
+  },
   {
     title: "The Fountainhead",
     author: "Ayn Rand",
@@ -175,7 +199,12 @@ const rawBooks: RawBook[] = [
     author: "Adib Khorram",
     coverImage: "https://covers.openlibrary.org/b/id/9274780-M.jpg"
   },
-  { title: "Ducks: Two Years in the Oil Sands", author: "Kate Beaton" },
+  {
+    title: "Ducks: Two Years in the Oil Sands",
+    author: "Kate Beaton",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1642101898i/59069071.jpg"
+  },
   {
     title: "Jack: Straight from the Gut",
     author: "Jack Welch",
@@ -196,7 +225,12 @@ const rawBooks: RawBook[] = [
     author: "J. D. Vance",
     coverImage: "https://covers.openlibrary.org/b/id/14846900-M.jpg"
   },
-  { title: "The Alchemist", author: "Paulo Coelho" }
+  {
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    coverImage:
+      "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1654371463i/18144590.jpg"
+  }
 ];
 
 const directBookLinks: Record<

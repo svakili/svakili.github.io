@@ -226,6 +226,28 @@ const resolveAmazonUrl = async (title, author) => {
   return asin ? `https://www.amazon.com/dp/${asin}` : undefined;
 };
 
+const resolveGoodreadsCover = async (goodreadsUrl) => {
+  if (!goodreadsUrl) {
+    return undefined;
+  }
+
+  const response = await fetch(goodreadsUrl, {
+    headers: {
+      "user-agent": "Mozilla/5.0"
+    }
+  });
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const html = await response.text();
+  const match = html.match(
+    /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i
+  );
+  return match?.[1];
+};
+
 const searchBook = async ({ title, author }) => {
   const query = new URLSearchParams({ title, author }).toString();
   const response = await fetch(`https://openlibrary.org/search.json?${query}`);
@@ -241,12 +263,13 @@ const searchBook = async ({ title, author }) => {
     resolveGoodreadsUrl(title, author),
     resolveAmazonUrl(title, author)
   ]);
+  const fallbackCover = await resolveGoodreadsCover(goodreadsUrl);
 
   if (!match) {
     return {
       title,
       author,
-      coverImage: undefined,
+      coverImage: fallbackCover,
       goodreadsUrl,
       amazonUrl
     };
@@ -259,7 +282,7 @@ const searchBook = async ({ title, author }) => {
     author,
     coverImage: coverId
       ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`
-      : undefined,
+      : fallbackCover,
     goodreadsUrl,
     amazonUrl
   };
