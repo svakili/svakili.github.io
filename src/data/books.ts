@@ -6,7 +6,8 @@ const rawBooks: RawBook[] = [
   {
     title: "Kitchen Confidential",
     author: "Anthony Bourdain",
-    coverImage: "https://covers.openlibrary.org/b/id/843879-M.jpg"
+    coverImage: "https://covers.openlibrary.org/b/id/843879-M.jpg",
+    quote: "your body is not a temple, it's an amusement park. Enjoy the ride."
   },
   {
     title: "Freakonomics",
@@ -54,7 +55,9 @@ const rawBooks: RawBook[] = [
   {
     title: "Dune",
     author: "Frank Herbert",
-    coverImage: "https://covers.openlibrary.org/b/id/11481354-M.jpg"
+    coverImage: "https://covers.openlibrary.org/b/id/11481354-M.jpg",
+    quote:
+      "Muad'Dib learned rapidly because his first training was in how to learn. And the first lesson of all was the basic trust that he could learn. It's shocking to find how many people do not believe they can learn, and how many more believe learning to be difficult. Muad'Dib knew that every experience carries its lesson."
   },
   {
     title: "Steve Jobs",
